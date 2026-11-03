@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alertpath"
+version = "0.1.0"
+description = "Tell whether a TCP path is broken or the probe is. Keeps ok / refused / timeout apart."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Renhua Wei" }]
+keywords = ["monitoring", "observability", "networking", "ipv6", "on-call", "false-positive"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Networking",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = []
+
+[project.scripts]
+alertpath = "alertpath.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/dafili/alertpath-cli"
+Source = "https://github.com/dafili/alertpath-cli"
+"Paid sibling" = "https://vaultcheck.dafili.cn"
+
+[tool.setuptools]
+packages = ["alertpath"]
