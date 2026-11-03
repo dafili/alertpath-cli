@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: unit tests
+        run: python -m unittest discover -s tests -v
+      # The tool has to work where things are broken, so prove it runs with no
+      # site-packages at all rather than relying on a clean runner.
+      - name: runs with an empty environment
+        run: python -S -m alertpath --check-host 127.0.0.1 --port 1 --timeout 1 || true
+      - name: exit codes are distinct
+        run: |
+          set +e
+          python -m alertpath --check-host 127.0.0.1 --port 1 --timeout 1 >/dev/null 2>&1; echo "refused=$?"
+          python -m alertpath --check-host no-such-host-xyz.invalid --timeout 1 >/dev/null 2>&1; echo "unresolved=$?"
